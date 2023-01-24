@@ -52,13 +52,22 @@ namespace Week_1_Sample
                 Exit();
             if (Keyboard.GetState().IsKeyDown(Keys.A))
                 _sprite1.Move(new Vector2(-1,0));
+
             // TODO: Add your update logic here
             MouseState ms = Mouse.GetState();
-            if (_sprite1.BoundingRect.Contains(ms.Position.ToVector2()) 
-                && ms.LeftButton == ButtonState.Pressed)
+            if (_sprite1.BoundingRect.Contains(ms.Position.ToVector2()))
             {
-                if(_soundPlayer.State != SoundState.Playing)
-                    _soundPlayer.Play();
+                _sprite1.CurrentColor = _sprite1.tint * _sprite1.Transparency;
+                if (ms.LeftButton == ButtonState.Pressed)
+                {
+                    if (_soundPlayer.State != SoundState.Playing)
+                        _soundPlayer.Play();
+                    
+                }
+            }
+            else
+            {
+                _sprite1.CurrentColor = Color.White;
             }
             base.Update(gameTime);
         }
