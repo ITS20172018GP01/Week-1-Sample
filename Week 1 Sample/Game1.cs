@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Engine.Engines;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -27,7 +28,7 @@ namespace Week_1_Sample
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            new InputEngine(this);
             base.Initialize();
         }
 
@@ -50,15 +51,34 @@ namespace Week_1_Sample
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
-                _sprite1.Move(new Vector2(-1,0));
+            //if (Keyboard.GetState().IsKeyDown(Keys.A))
+            //    _sprite1.Move(new Vector2(-1,0));
+            if (InputEngine.IsKeyHeld(Keys.A))
+                _sprite1.Move(new Vector2(-1, 0));
+
+
             // TODO: Add your update logic here
-            MouseState ms = Mouse.GetState();
-            if (_sprite1.BoundingRect.Contains(ms.Position.ToVector2()) 
-                && ms.LeftButton == ButtonState.Pressed)
+            //MouseState ms = Mouse.GetState();
+            if (_sprite1.BoundingRect.Contains(InputEngine.MousePosition))
             {
-                if(_soundPlayer.State != SoundState.Playing)
-                    _soundPlayer.Play();
+                _sprite1.CurrentColor = _sprite1.tint * _sprite1.Transparency;
+                //if (ms.LeftButton == ButtonState.Pressed)
+                //{
+                //    if (_soundPlayer.State != SoundState.Playing)
+                //        _soundPlayer.Play();
+
+                //}
+
+                if (InputEngine.IsMouseLeftClick())
+                {
+                    if (_soundPlayer.State != SoundState.Playing)
+                        _soundPlayer.Play();
+                }
+
+            }
+            else
+            {
+                _sprite1.CurrentColor = Color.White;
             }
             base.Update(gameTime);
         }
